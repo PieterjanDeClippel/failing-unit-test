@@ -11,10 +11,6 @@ export class BsOffcanvasComponent {
 
   constructor() { }
 
-  @Output() backdropClick = new EventEmitter<MouseEvent>();
   show$ = new BehaviorSubject<boolean>(false);
-  size$ = new BehaviorSubject<number | null>(null);
-  hasBackdrop$ = new BehaviorSubject<boolean>(false);
-  position$ = new BehaviorSubject<OffcanvasPosition>('bottom');
 
 }

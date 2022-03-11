@@ -1,21 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { OffcanvasHostComponent } from './offcanvas-host/offcanvas-host.component';
-import { OffcanvasComponent } from './offcanvas/offcanvas.component';
+import { BsOffcanvasHostComponent } from './offcanvas-host/offcanvas-host.component';
+import { BsOffcanvasComponent } from './offcanvas/offcanvas.component';
 
 
 
 @NgModule({
   declarations: [
-    OffcanvasHostComponent,
-    OffcanvasComponent
+    BsOffcanvasHostComponent,
+    BsOffcanvasComponent
   ],
   imports: [
     CommonModule
   ],
   exports: [
-    OffcanvasHostComponent,
-    OffcanvasComponent
+    BsOffcanvasHostComponent,
+    BsOffcanvasComponent
   ]
 })
 export class ComponentsModule { }

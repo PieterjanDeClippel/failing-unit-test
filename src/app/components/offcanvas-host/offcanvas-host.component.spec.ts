@@ -25,6 +25,9 @@ describe('BsOffcanvasHostComponent', () => {
 
         // Testbench
         BsOffcanvasTestComponent,
+      ],
+      providers: [
+        { provide: BsOffcanvasComponent, useClass: BsOffcanvasMockComponent }
       ]
     })
     .compileComponents();
@@ -46,7 +49,7 @@ type OffcanvasPosition = 'top' | 'bottom' | 'start' | 'end';
 @Component({
   selector: 'bs-offcanvas-test',
   template: `
-    <bs-offcanvas [(show)]="isOffcanvasVisible" [position]="position" [hasBackdrop]="true" (backdropClick)="isOffcanvasVisible = false">
+    <bs-offcanvas [(show)]="isOffcanvasVisible">
         <div *bsOffcanvasContent>
             <bs-offcanvas-header>
                 <h5>Offcanvas</h5>

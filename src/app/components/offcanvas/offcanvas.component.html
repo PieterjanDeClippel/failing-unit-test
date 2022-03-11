@@ -1,1 +1,9 @@
-<p>offcanvas works!</p>
+<!-- Comment or uncomment everything in this file, and run "npm test" to see the issue in action. -->
+<!-- The offcanvas-host unit test is failing. -->
+
+<div [class.show]="show$ | async">
+    <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
+</div>
+<ng-template #contentTemplate>
+    <span>Hello world</span>
+</ng-template>
