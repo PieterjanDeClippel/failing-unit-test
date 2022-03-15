@@ -1,8 +1,8 @@
-import { AfterViewInit, Component, ComponentRef, EventEmitter, Injector, Input, OnDestroy, OnInit, Output, TemplateRef } from '@angular/core';
+import { AfterViewInit, Component, ComponentRef, EventEmitter, Inject, Injector, Input, OnDestroy, OnInit, Output, TemplateRef } from '@angular/core';
 import { BehaviorSubject, combineLatest, filter, Subject, takeUntil } from 'rxjs';
 import { Overlay } from '@angular/cdk/overlay';
 import { OffcanvasPosition } from '../../types/position';
-import { ComponentPortal } from '@angular/cdk/portal';
+import { ComponentPortal, ComponentType } from '@angular/cdk/portal';
 import { BsOffcanvasComponent } from '../offcanvas/offcanvas.component';
 
 @Component({
@@ -12,7 +12,7 @@ import { BsOffcanvasComponent } from '../offcanvas/offcanvas.component';
 })
 export class BsOffcanvasHostComponent implements AfterViewInit, OnDestroy {
 
-  constructor(private overlayService: Overlay, private rootInjector: Injector) {
+  constructor(private overlayService: Overlay, private rootInjector: Injector, @Inject('PORTAL_FACTORY') private factory: (type: ComponentType<any>, injector: Injector) => ComponentPortal<any>) {
     this.show$
       .pipe(takeUntil(this.destroyed$))
       .subscribe((show) => {
@@ -36,7 +36,8 @@ export class BsOffcanvasHostComponent implements AfterViewInit, OnDestroy {
       ],
       parent: this.rootInjector,
     });
-    const portal = new ComponentPortal(BsOffcanvasComponent, null, injector);
+    // const portal = new ComponentPortal(BsOffcanvasComponent, null, injector);
+    const portal = this.factory(BsOffcanvasComponent, injector);
     const overlayRef = this.overlayService.create({
       scrollStrategy: this.overlayService.scrollStrategies.block(),
       positionStrategy: this.overlayService.position().global()
@@ -44,8 +45,9 @@ export class BsOffcanvasHostComponent implements AfterViewInit, OnDestroy {
       hasBackdrop: false
     });
 
+
     // The unit test should use a mock class for BsOffcanvasComponent => BsOffcanvasMockComponent
-    this.component = overlayRef.attach<BsOffcanvasComponent>(portal);
+    this.component = overlayRef.attach(portal);
 
     this.viewInited$.next(true);
   }

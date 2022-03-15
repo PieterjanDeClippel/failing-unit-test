@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, Directive, Inject, TemplateRef } from '@angular/core';
+import { Component, Directive, Inject, Injector, TemplateRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { OverlayModule } from '@angular/cdk/overlay';
 
 import { BsOffcanvasHostComponent } from './offcanvas-host.component';
-import { BsOffcanvasComponent } from '../offcanvas/offcanvas.component';
+import { ComponentPortal, ComponentType } from '@angular/cdk/portal';
+// import { BsOffcanvasComponent } from '../offcanvas/offcanvas.component';
 
 describe('BsOffcanvasHostComponent', () => {
   let component: BsOffcanvasTestComponent;
@@ -18,7 +19,7 @@ describe('BsOffcanvasHostComponent', () => {
         BsOffcanvasHostComponent,
       
         // Mock dependencies
-        BsOffcanvasMockComponent,
+        BsOffcanvasComponent,
         BsOffcanvasHeaderMockComponent,
         BsOffcanvasBodyMockComponent,
         BsOffcanvasContentMockDirective,
@@ -27,7 +28,13 @@ describe('BsOffcanvasHostComponent', () => {
         BsOffcanvasTestComponent,
       ],
       providers: [
-        { provide: BsOffcanvasComponent, useClass: BsOffcanvasMockComponent }
+        // { provide: BsOffcanvasComponent, useClass: BsOffcanvasMockComponent },
+        {
+          provide: 'PORTAL_FACTORY',
+          useValue: (injector: Injector) => {
+            return new ComponentPortal(BsOffcanvasComponent, null, injector);
+          }
+        }
       ]
     })
     .compileComponents();
@@ -79,10 +86,10 @@ class BsOffcanvasContentMockDirective {
       <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
     </div>`,
   providers: [
-    { provide: BsOffcanvasComponent, useExisting: BsOffcanvasMockComponent }
+    // { provide: BsOffcanvasComponent, useExisting: BsOffcanvasMockComponent }
   ]
 })
-class BsOffcanvasMockComponent {
+class BsOffcanvasComponent {
   constructor(@Inject('OFFCANVAS_CONTENT') contentTemplate: TemplateRef<any>) {
     this.contentTemplate = contentTemplate;
   }
